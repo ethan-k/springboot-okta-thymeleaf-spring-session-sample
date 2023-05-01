@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>Protected developers</h1>
+
+<form class="d-flex" method="post" th:action="@{/logout}"
+      th:if="${#authorization.expression('isAuthenticated()')}">
+    <input class="form-control me-2" type="hidden" th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}"/>
+    <button id="logout-button" type="submit" class="btn btn-danger">Logout</button>
+</form>
+
+<div>
+    <h2>My Profile</h2>
+    <p>Hello, <span th:text="${#authentication.principal.attributes['name']}">Joe Coder</span>. Below is the
+        information that was read with your <a
+                href="https://developer.okta.com/docs/api/resources/oidc.html#get-user-information">ID Token</a>.
+    </p>
+    <p>This route is protected with the annotation <code>@PreAuthorize("hasAuthority('SCOPE_profile')")</code>,
+        which will ensure that this page cannot be accessed until you have authenticated, and have the scope <code>profile</code>.</p>
+</div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Claim</th>
+        <th>Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${details}">
+        <td th:text="${item.key}">Key</td>
+        <td th:id="${'claim-' + item.key}" th:text="${item.value}">Value</td>
+    </tr>
+    </tbody>
+</table>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Spring Security Authorities</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="scope : ${#authentication.authorities}">
+        <td><code th:text="${scope}">Authority</code></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

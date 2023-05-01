@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: spring-session-schema-mysql
+      author: eunseok.kang
+      preConditions:
+        onFail:
+          markRan:
+            onSqlOutput: true
+      changes:
+        - sqlFile:
+            path: spring-session-schema-mysql.sql
+            relativeToChangelogFile: true

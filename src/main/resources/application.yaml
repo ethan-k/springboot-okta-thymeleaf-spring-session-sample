@@ -1,0 +1,45 @@
+okta:
+  oauth2:
+    issuer: ""
+    client-id: ""
+    client-secret: ""
+    scopes:
+      - email
+      - openid
+    redirect-uri: /authorization-code/callback
+    post-logout-redirect-uri: /
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          okta:
+            user-name-attribute: email
+  session:
+    jdbc:
+      initialize-schema: always
+      platform: mysql
+  datasource:
+    name: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/okta
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      username: root
+      password: root
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/okta
+  liquibase:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    enabled: true
+
+server:
+  port: 8080
+logging:
+  level:
+    org.springframework.security: TRACE
+    org.springframework.session: TRACE
+    org.springframework: TRACE
+    org.springframework.jdbc.core: TRACE

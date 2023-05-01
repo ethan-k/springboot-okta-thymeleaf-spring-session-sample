@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+>
+<head>
+    <title>User Details</title>
+</head>
+<body id="samples">
+
+
+<div sec:authorize="isAuthenticated()">
+    <h1>This content is only shown to authenticated users.</h1>
+</div>
+
+<div sec:authorize="hasAnyAuthority('developers')">
+    <h1>This content is only shown to developers users</h1>
+</div>
+<div sec:authorize="hasAnyAuthority('analysts')">
+    <h1>This content is only shown to analysts users</h1>
+</div>
+
+<form class="d-flex" method="post" th:action="@{/logout}"
+      th:if="${#authorization.expression('isAuthenticated()')}">
+    <input class="form-control me-2" type="hidden" th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}"/>
+    <button id="logout-button" type="submit" class="btn btn-danger">Logout</button>
+</form>
+<a href="/protected">developers</a>
+<a href="/protected2">analysts</a>
+<h1>Index</h1>
+
+</body>
+</html>
